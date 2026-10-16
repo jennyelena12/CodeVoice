@@ -1,0 +1,23 @@
+# macOS
+.DS_Store
+
+# Xcode build files
+build/
+DerivedData/
+*.xcuserstate
+xcuserdata/
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Swift Package Manager
+.build/
+Packages/
+
+# Secrets and environment variables
+.env
+.env.*
+!.env.example
+Secrets.swift
+secrets.json

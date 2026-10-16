@@ -1,0 +1,532 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 110;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		D65B7D06307CBE2F0045BF85 /* XcodeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6E9C5CD307CB525004BF866 /* XcodeKit.framework */; };
+		D65B7D07307CBE2F0045BF85 /* XcodeKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D6E9C5CD307CB525004BF866 /* XcodeKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D6E9C5CC307CB525004BF866 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6E9C5CB307CB525004BF866 /* Cocoa.framework */; };
+		D6E9C5D7307CB525004BF866 /* CodeVoiceExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = D6E9C5C9307CB525004BF866 /* CodeVoiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		D6E9C5D5307CB525004BF866 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D6E9C5AF307CB4F4004BF866 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D6E9C5C8307CB525004BF866;
+			remoteInfo = CodeVoiceExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		D65B7D08307CBE2F0045BF85 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			dstPath = "";
+			dstSubfolder = Frameworks;
+			files = (
+				D65B7D07307CBE2F0045BF85 /* XcodeKit.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+		};
+		D6E9C5DC307CB525004BF866 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			dstPath = "";
+			dstSubfolder = PlugIns;
+			files = (
+				D6E9C5D7307CB525004BF866 /* CodeVoiceExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		D6E9C5B7307CB4F4004BF866 /* CodeVoice.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CodeVoice.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D6E9C5C9307CB525004BF866 /* CodeVoiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = CodeVoiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		D6E9C5CB307CB525004BF866 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		D6E9C5CD307CB525004BF866 /* XcodeKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XcodeKit.framework; path = Library/Frameworks/XcodeKit.framework; sourceTree = DEVELOPER_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		D6E9C5D8307CB525004BF866 /* Exceptions for "CodeVoiceExtension" folder in "CodeVoiceExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = D6E9C5C8307CB525004BF866 /* CodeVoiceExtension */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		D6E9C5B9307CB4F4004BF866 /* CodeVoice */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = CodeVoice;
+			sourceTree = "<group>";
+		};
+		D6E9C5CF307CB525004BF866 /* CodeVoiceExtension */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				D6E9C5D8307CB525004BF866 /* Exceptions for "CodeVoiceExtension" folder in "CodeVoiceExtension" target */,
+			);
+			path = CodeVoiceExtension;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D6E9C5B4307CB4F4004BF866 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			files = (
+			);
+		};
+		D6E9C5C6307CB525004BF866 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			files = (
+				D6E9C5CC307CB525004BF866 /* Cocoa.framework in Frameworks */,
+				D65B7D06307CBE2F0045BF85 /* XcodeKit.framework in Frameworks */,
+			);
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		D6E9C5AE307CB4F4004BF866 = {
+			isa = PBXGroup;
+			children = (
+				D6E9C5B9307CB4F4004BF866 /* CodeVoice */,
+				D6E9C5CF307CB525004BF866 /* CodeVoiceExtension */,
+				D6E9C5CA307CB525004BF866 /* Frameworks */,
+				D6E9C5B8307CB4F4004BF866 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		D6E9C5B8307CB4F4004BF866 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D6E9C5B7307CB4F4004BF866 /* CodeVoice.app */,
+				D6E9C5C9307CB525004BF866 /* CodeVoiceExtension.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D6E9C5CA307CB525004BF866 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D6E9C5CB307CB525004BF866 /* Cocoa.framework */,
+				D6E9C5CD307CB525004BF866 /* XcodeKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		D6E9C5B6307CB4F4004BF866 /* CodeVoice */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D6E9C5C2307CB4F4004BF866 /* Build configuration list for PBXNativeTarget "CodeVoice" */;
+			buildPhases = (
+				D6E9C5B3307CB4F4004BF866 /* Sources */,
+				D6E9C5B4307CB4F4004BF866 /* Frameworks */,
+				D6E9C5B5307CB4F4004BF866 /* Resources */,
+				D6E9C5DC307CB525004BF866 /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D6E9C5D6307CB525004BF866 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				D6E9C5B9307CB4F4004BF866 /* CodeVoice */,
+			);
+			name = CodeVoice;
+			productName = CodeVoice;
+			productReference = D6E9C5B7307CB4F4004BF866 /* CodeVoice.app */;
+			productType = "com.apple.product-type.application";
+		};
+		D6E9C5C8307CB525004BF866 /* CodeVoiceExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D6E9C5D9307CB525004BF866 /* Build configuration list for PBXNativeTarget "CodeVoiceExtension" */;
+			buildPhases = (
+				D6E9C5C5307CB525004BF866 /* Sources */,
+				D6E9C5C6307CB525004BF866 /* Frameworks */,
+				D6E9C5C7307CB525004BF866 /* Resources */,
+				D65B7D08307CBE2F0045BF85 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			fileSystemSynchronizedGroups = (
+				D6E9C5CF307CB525004BF866 /* CodeVoiceExtension */,
+			);
+			name = CodeVoiceExtension;
+			productName = CodeVoiceExtension;
+			productReference = D6E9C5C9307CB525004BF866 /* CodeVoiceExtension.appex */;
+			productType = "com.apple.product-type.xcode-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D6E9C5AF307CB4F4004BF866 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2700;
+				LastUpgradeCheck = 2700;
+				TargetAttributes = {
+					D6E9C5B6307CB4F4004BF866 = {
+						CreatedOnToolsVersion = 27.0;
+					};
+					D6E9C5C8307CB525004BF866 = {
+						CreatedOnToolsVersion = 27.0;
+					};
+				};
+			};
+			buildConfigurationList = D6E9C5B2307CB4F4004BF866 /* Build configuration list for PBXProject "CodeVoice" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = D6E9C5AE307CB4F4004BF866;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				D65B7D09307CE0850045BF85 /* XCRemoteSwiftPackageReference "mlx-swift" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = D6E9C5B8307CB4F4004BF866 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D6E9C5B6307CB4F4004BF866 /* CodeVoice */,
+				D6E9C5C8307CB525004BF866 /* CodeVoiceExtension */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		D6E9C5B5307CB4F4004BF866 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			files = (
+			);
+		};
+		D6E9C5C7307CB525004BF866 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			files = (
+			);
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D6E9C5B3307CB4F4004BF866 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			files = (
+			);
+		};
+		D6E9C5C5307CB525004BF866 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			files = (
+			);
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		D6E9C5D6307CB525004BF866 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D6E9C5C8307CB525004BF866 /* CodeVoiceExtension */;
+			targetProxy = D6E9C5D5307CB525004BF866 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		D6E9C5C0307CB4F4004BF866 /* Debug configuration for PBXProject "CodeVoice" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = YQHD8PM5A8;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.6;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		D6E9C5C1307CB4F4004BF866 /* Release configuration for PBXProject "CodeVoice" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = YQHD8PM5A8;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.6;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		D6E9C5C3307CB4F4004BF866 /* Debug configuration for PBXNativeTarget "CodeVoice" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = YQHD8PM5A8;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = elena.CodeVoice;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		D6E9C5C4307CB4F4004BF866 /* Release configuration for PBXNativeTarget "CodeVoice" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = YQHD8PM5A8;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = elena.CodeVoice;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		D6E9C5DA307CB525004BF866 /* Debug configuration for PBXNativeTarget "CodeVoiceExtension" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = YQHD8PM5A8;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = CodeVoiceExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = CodeVoiceExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = elena.CodeVoice.CodeVoiceExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		D6E9C5DB307CB525004BF866 /* Release configuration for PBXNativeTarget "CodeVoiceExtension" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = YQHD8PM5A8;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = CodeVoiceExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = CodeVoiceExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = elena.CodeVoice.CodeVoiceExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		D6E9C5B2307CB4F4004BF866 /* Build configuration list for PBXProject "CodeVoice" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D6E9C5C0307CB4F4004BF866 /* Debug configuration for PBXProject "CodeVoice" */,
+				D6E9C5C1307CB4F4004BF866 /* Release configuration for PBXProject "CodeVoice" */,
+			);
+			defaultConfigurationName = Release;
+		};
+		D6E9C5C2307CB4F4004BF866 /* Build configuration list for PBXNativeTarget "CodeVoice" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D6E9C5C3307CB4F4004BF866 /* Debug configuration for PBXNativeTarget "CodeVoice" */,
+				D6E9C5C4307CB4F4004BF866 /* Release configuration for PBXNativeTarget "CodeVoice" */,
+			);
+			defaultConfigurationName = Release;
+		};
+		D6E9C5D9307CB525004BF866 /* Build configuration list for PBXNativeTarget "CodeVoiceExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D6E9C5DA307CB525004BF866 /* Debug configuration for PBXNativeTarget "CodeVoiceExtension" */,
+				D6E9C5DB307CB525004BF866 /* Release configuration for PBXNativeTarget "CodeVoiceExtension" */,
+			);
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		D65B7D09307CE0850045BF85 /* XCRemoteSwiftPackageReference "mlx-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ml-explore/mlx-swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.32.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+	};
+	rootObject = D6E9C5AF307CB4F4004BF866 /* Project object */;
+	validationLevel = 1;
+}
