@@ -50,6 +50,14 @@
                     <key>XCSourceEditorCommandName</key>
                     <string>Explain Selected Code</string>
                 </dict>
+                <dict>
+                                <key>XCSourceEditorCommandClassName</key>
+                                <string>$(PRODUCT_MODULE_NAME).SourceEditorCommand</string>
+                                <key>XCSourceEditorCommandIdentifier</key>
+                                <string>$(PRODUCT_BUNDLE_IDENTIFIER).LineImpact</string>
+                                <key>XCSourceEditorCommandName</key>
+                                <string>Analyze Line Impact</string>
+                            </dict>
 			</array>
 			<key>XCSourceEditorExtensionPrincipalClass</key>
 			<string>$(PRODUCT_MODULE_NAME).SourceEditorExtension</string>

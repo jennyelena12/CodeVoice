@@ -2,17 +2,77 @@ import Foundation
 import AVFoundation
 import XcodeKit
 import FoundationModels
+import AppKit
 
-class SourceEditorCommand: NSObject, XCSourceEditorCommand, AVSpeechSynthesizerDelegate {
 
+final class SpeechManager: NSObject, AVSpeechSynthesizerDelegate {
+    static let shared = SpeechManager()
+    
     private let synthesizer = AVSpeechSynthesizer()
+    private var completionHandler: ((Error?) -> Void)?
+    
+    private override init() {
+        super.init()
+        synthesizer.delegate = self
+    }
+    
+    func speak(message: String, completion: ((Error?) -> Void)?) {
+        self.completionHandler = completion
+        
+        let isVoiceOverRunning = NSWorkspace.shared.runningApplications.contains {
+            $0.bundleIdentifier == "com.apple.VoiceOver"
+        }
+        
+        if isVoiceOverRunning {
+            // 1. Copy context to pasteboard so user can read it via VO + Shift + C
+            let pasteboard = NSPasteboard.general
+            pasteboard.clearContents()
+            pasteboard.setString(message, forType: .string)
+            
+            // 2. Play a brief system cue and notify via long delay
+            NSSound.beep()
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { [weak self] in
+                if self?.synthesizer.isSpeaking == true {
+                    self?.synthesizer.stopSpeaking(at: .immediate)
+                }
+                
+                let utterance = AVSpeechUtterance(string: message)
+                utterance.rate = 0.50
+                self?.synthesizer.speak(utterance)
+            }
+        } else {
+            // Standard AVSpeechSynthesizer for non-VoiceOver users
+            if synthesizer.isSpeaking {
+                synthesizer.stopSpeaking(at: .immediate)
+            }
+            
+            let utterance = AVSpeechUtterance(string: message)
+            utterance.rate = 0.48
+            utterance.volume = 1.0
+            synthesizer.speak(utterance)
+        }
+    }
+    
+    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
+        completionHandler?(nil)
+        completionHandler = nil
+    }
+    
+    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didCancel utterance: AVSpeechUtterance) {
+        completionHandler?(nil)
+        completionHandler = nil
+    }
+}
+
+// MARK: - Source Editor Command
+class SourceEditorCommand: NSObject, XCSourceEditorCommand {
+
     private var commandCompletion: ((Error?) -> Void)?
 
     func perform(with invocation: XCSourceEditorCommandInvocation, completionHandler: @escaping (Error?) -> Void) {
         self.commandCompletion = completionHandler
-        self.synthesizer.delegate = self
 
-        // Route based on the identifier defined in Info.plist
         let identifier = invocation.commandIdentifier
         
         if identifier.hasSuffix("ExplainSelection") {
@@ -25,13 +85,21 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand, AVSpeechSynthesizerD
             executeReadLineFeature(invocation: invocation)
         } else if identifier.hasSuffix("Summarize") {
             executeSummarizeFeature(invocation: invocation)
+        } else if identifier.hasSuffix("LineImpact") {
+            executeLineImpactFeature(invocation: invocation)
         } else {
             completionHandler(nil)
         }
     }
 
-    // MARK: - Feature 1: Read Line Context (Simple Context with Exact Names)
+    // MARK: - Speech Dispatcher
     
+    private func speak(message: String) {
+        SpeechManager.shared.speak(message: message, completion: commandCompletion)
+    }
+
+    // MARK: - Feature 1: Read Line Context
+
     private func executeReadLineFeature(invocation: XCSourceEditorCommandInvocation) {
         let buffer = invocation.buffer
         guard let selection = buffer.selections.firstObject as? XCSourceTextRange else {
@@ -74,7 +142,7 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand, AVSpeechSynthesizerD
         return nil
     }
 
-    // MARK: - Feature 2: Read Code Structure (Detailed Accessibility Context)
+    // MARK: - Feature 2: Read Code Structure
 
     private func executeReadStructureFeature(invocation: XCSourceEditorCommandInvocation) {
         let buffer = invocation.buffer
@@ -98,48 +166,84 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand, AVSpeechSynthesizerD
             .filter { $0.startLine <= currentLineNum && $0.endLine >= currentLineNum }
             .sorted { ($0.endLine - $0.startLine) < ($1.endLine - $1.startLine) }
 
-        // 1. Indentation level
         let nestingLevel = enclosingBlocks.count
-        let indentPhrase = "Indentation level: \(nestingLevel)."
+        let lineCodePhrase = code.isEmpty ? "Empty line." : "Code: \(code)."
 
-        // 2. Parent context
-        let contextPhrase: String
-        if enclosingBlocks.isEmpty {
-            contextPhrase = "Parent context: Global scope."
-        } else {
-            let contexts = enclosingBlocks.map { $0.contextDescription }.joined(separator: " inside ")
-            contextPhrase = "Parent context: \(contexts)."
-        }
-
-        // 3. Code range
         let rangePhrase: String
         if enclosingBlocks.isEmpty {
-            rangePhrase = "Code range: Global scope."
+            rangePhrase = "At global scope."
         } else {
             let currentBlock = enclosingBlocks[0]
-            var rangeDetails = "Current block range: lines \(currentBlock.startLine) to \(currentBlock.endLine)."
-            if enclosingBlocks.count > 1 {
-                let parentRanges = enclosingBlocks[1...].map { "lines \($0.startLine) to \($0.endLine)" }.joined(separator: "; ")
-                rangeDetails += " Parent block ranges: \(parentRanges)."
-            }
-            rangePhrase = rangeDetails
+            rangePhrase = "Inside \(currentBlock.contextDescription), from line \(currentBlock.startLine) to line \(currentBlock.endLine)."
         }
 
-        let lineCodePhrase = code.isEmpty
-            ? "Line \(currentLineNum): Empty line."
-            : "Line \(currentLineNum): \(code)."
-
-        let message = "\(lineCodePhrase) \(indentPhrase) \(contextPhrase) \(rangePhrase)"
+        let message = "Line \(currentLineNum). Level \(nestingLevel). \(lineCodePhrase) \(rangePhrase)"
         speak(message: message)
     }
 
-    // MARK: - Feature 3: Check Code Errors & Warnings (Simplified Line Reading)
+    // MARK: - Feature 3: Line Impact Analysis
+
+    private func executeLineImpactFeature(invocation: XCSourceEditorCommandInvocation) {
+        let buffer = invocation.buffer
+        guard let selection = buffer.selections.firstObject as? XCSourceTextRange else {
+            commandCompletion?(nil)
+            return
+        }
+
+        let lineIndex = selection.start.line
+        guard lineIndex >= 0, lineIndex < buffer.lines.count,
+              let sourceLine = buffer.lines[lineIndex] as? String else {
+            commandCompletion?(nil)
+            return
+        }
+
+        let currentLineNum = lineIndex + 1
+        let code = sourceLine.trimmingCharacters(in: .whitespacesAndNewlines)
+
+        guard !code.isEmpty else {
+            speak(message: "Line \(currentLineNum) is an empty line and has no functional impact.")
+            return
+        }
+
+        let fullText = buffer.completeBuffer
+
+        Task {
+            do {
+                let session = LanguageModelSession(
+                    instructions: """
+                    You are an accessibility assistant for speech synthesis.
+                    Analyze line \(currentLineNum) (`\(code)`) within the context of the provided Swift file.
+                    Explain in 2 short, plain-English sentences:
+                    1. What parent structure contains this line.
+                    2. How executing or changing this line impacts state, parameters, return values, or control flow within this file.
+                    Do not refer to other files in the project. Keep the tone concise and spoken-word friendly without formatting symbols.
+                    """
+                )
+                
+                let aiResponse = try await session.respond(to: fullText)
+                let aiSummary = aiResponse.content.trimmingCharacters(in: .whitespacesAndNewlines)
+
+                let finalMessage = aiSummary.isEmpty
+                    ? "Could not determine impact for line \(currentLineNum)."
+                    : "Line \(currentLineNum) impact: \(aiSummary)"
+                
+                await MainActor.run {
+                    self.speak(message: finalMessage)
+                }
+            } catch {
+                await MainActor.run {
+                    self.speak(message: "Line impact analysis unavailable.")
+                }
+            }
+        }
+    }
+
+    // MARK: - Feature 4: Check Code Errors & Warnings
 
     private func executeCheckErrorsFeature(invocation: XCSourceEditorCommandInvocation) {
         let buffer = invocation.buffer
         let fullText = buffer.completeBuffer
         
-        // 1. Fast local check for unclosed or mismatched syntax
         var localIssues: [String] = []
         var symbolStack: [(char: Character, line: Int)] = []
 
@@ -186,7 +290,6 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand, AVSpeechSynthesizerD
             localIssues.append("Line \(unclosed.line): Missing closing bracket for '\(unclosed.char)'.")
         }
 
-        // Speak fast local issues if found
         if !localIssues.isEmpty {
             let issueCount = localIssues.count
             let summary = "Found \(issueCount) syntax issue\(issueCount > 1 ? "s" : ""): " + localIssues.joined(separator: " ")
@@ -194,16 +297,14 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand, AVSpeechSynthesizerD
             return
         }
 
-        // 2. Deep check with LanguageModelSession for warnings, bugs, and simplified explanations
         Task {
             do {
                 let session = LanguageModelSession(
                     instructions: """
                     You are an accessibility assistant for screen readers. Analyze the provided Swift code for errors, warnings, unused variables, or bad syntax.
-                    If issues exist:
-                    - Format each issue as 'Line [X]: [simplified, plain-English explanation]'.
-                    - Explain what is wrong and how to fix it in simple terms without compiler jargon.
-                    - List all issues found in chronological line order.
+                    Format each issue as 'Line [X]: [simplified, plain-English explanation]'.
+                    Explain what is wrong and how to fix it in simple terms without compiler jargon.
+                    List all issues found in chronological line order.
                     If no errors or warnings exist, reply strictly with 'No errors or warnings found.'
                     """
                 )
@@ -223,7 +324,7 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand, AVSpeechSynthesizerD
         }
     }
 
-    // MARK: - Feature 4: Summarize File
+    // MARK: - Feature 5: Summarize File
 
     private func executeSummarizeFeature(invocation: XCSourceEditorCommandInvocation) {
         let fullText = invocation.buffer.completeBuffer
@@ -241,10 +342,9 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand, AVSpeechSynthesizerD
                 )
                 
                 let aiResponse = try await session.respond(to: fullText)
-                let aiSummary = aiResponse.content
-                let aiSummaryTrimmed = aiSummary.trimmingCharacters(in: .whitespacesAndNewlines)
+                let aiSummary = aiResponse.content.trimmingCharacters(in: .whitespacesAndNewlines)
 
-                let finalMessage = aiSummaryTrimmed.isEmpty ? structureMessage : "\(structureMessage) Summary: \(aiSummaryTrimmed)"
+                let finalMessage = aiSummary.isEmpty ? structureMessage : "\(structureMessage) Summary: \(aiSummary)"
                 
                 await MainActor.run {
                     self.speak(message: finalMessage)
@@ -257,7 +357,7 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand, AVSpeechSynthesizerD
         }
     }
 
-    // MARK: - Feature 5: Explain Selected Code
+    // MARK: - Feature 6: Explain Selected Code
 
     private func executeExplainSelectionFeature(invocation: XCSourceEditorCommandInvocation) {
         let buffer = invocation.buffer
@@ -472,17 +572,5 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand, AVSpeechSynthesizerD
         guard let regex = try? NSRegularExpression(pattern: pattern, options: []) else { return 0 }
         let range = NSRange(text.startIndex..., in: text)
         return regex.numberOfMatches(in: text, options: [], range: range)
-    }
-
-    // MARK: - Speech Handling
-    
-    private func speak(message: String) {
-        let utterance = AVSpeechUtterance(string: message)
-        utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
-        utterance.rate = 0.48
-        synthesizer.speak(utterance)jy5ffd
-    }
-    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
-        commandCompletion?(nil)
     }
 }
