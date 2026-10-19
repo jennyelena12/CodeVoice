@@ -2,30 +2,46 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>Privacy - Language Model Usage Description</key>
-	<string>Used to generate plain-English summaries of Swift source files.</string>
-	<key>NSExtension</key>
-	<dict>
-		<key>NSExtensionAttributes</key>
-		<dict>
-			<key>XCSourceEditorCommandDefinitions</key>
-			<array>
-				<dict>
-					<key>XCSourceEditorCommandClassName</key>
-					<string>$(PRODUCT_MODULE_NAME).SourceEditorCommand</string>
-					<key>XCSourceEditorCommandIdentifier</key>
-					<string>$(PRODUCT_BUNDLE_IDENTIFIER).ReadLine</string>
-					<key>XCSourceEditorCommandName</key>
-					<string>Read Line Context</string>
-				</dict>
-				<dict>
-					<key>XCSourceEditorCommandClassName</key>
-					<string>$(PRODUCT_MODULE_NAME).SourceEditorCommand</string>
-					<key>XCSourceEditorCommandIdentifier</key>
-					<string>$(PRODUCT_BUNDLE_IDENTIFIER).Summarize</string>
-					<key>XCSourceEditorCommandName</key>
-					<string>Summarize File</string>
-				</dict>
+    <key>Privacy - Language Model Usage Description</key>
+    <string>Used to generate plain-English summaries of Swift source files.</string>
+    <key>NSExtension</key>
+    <dict>
+        <key>NSExtensionAttributes</key>
+        <dict>
+            <key>XCSourceEditorCommandDefinitions</key>
+            <array>
+                <dict>
+                    <key>XCSourceEditorCommandClassName</key>
+                    <string>$(PRODUCT_MODULE_NAME).SourceEditorCommand</string>
+                    <key>XCSourceEditorCommandIdentifier</key>
+                    <string>$(PRODUCT_BUNDLE_IDENTIFIER).ReadLine</string>
+                    <key>XCSourceEditorCommandName</key>
+                    <string>Read Line Context</string>
+                </dict>
+                <dict>
+                    <key>XCSourceEditorCommandClassName</key>
+                    <string>$(PRODUCT_MODULE_NAME).SourceEditorCommand</string>
+                    <key>XCSourceEditorCommandIdentifier</key>
+                    <string>$(PRODUCT_BUNDLE_IDENTIFIER).ReadLineV2</string>
+                    <key>XCSourceEditorCommandName</key>
+                    <string>Read Line Context v2</string>
+                </dict>
+                <dict>
+                    <key>XCSourceEditorCommandClassName</key>
+                    <string>$(PRODUCT_MODULE_NAME).SourceEditorCommand</string>
+                    <key>XCSourceEditorCommandIdentifier</key>
+                    <string>$(PRODUCT_BUNDLE_IDENTIFIER).ReadLineV3</string>
+                    <key>XCSourceEditorCommandName</key>
+                    <string>Read Line Context v3</string>
+                </dict>
+                <dict>
+                    <key>XCSourceEditorCommandClassName</key>
+                    <string>$(PRODUCT_MODULE_NAME).SourceEditorCommand</string>
+                    <key>XCSourceEditorCommandIdentifier</key>
+                    <string>$(PRODUCT_BUNDLE_IDENTIFIER).Summarize</string>
+                    <key>XCSourceEditorCommandName</key>
+                    <string>Summarize File</string>
+                </dict>
                 <dict>
                     <key>XCSourceEditorCommandClassName</key>
                     <string>$(PRODUCT_MODULE_NAME).SourceEditorCommand</string>
@@ -51,19 +67,19 @@
                     <string>Explain Selected Code</string>
                 </dict>
                 <dict>
-                                <key>XCSourceEditorCommandClassName</key>
-                                <string>$(PRODUCT_MODULE_NAME).SourceEditorCommand</string>
-                                <key>XCSourceEditorCommandIdentifier</key>
-                                <string>$(PRODUCT_BUNDLE_IDENTIFIER).LineImpact</string>
-                                <key>XCSourceEditorCommandName</key>
-                                <string>Analyze Line Impact</string>
-                            </dict>
-			</array>
-			<key>XCSourceEditorExtensionPrincipalClass</key>
-			<string>$(PRODUCT_MODULE_NAME).SourceEditorExtension</string>
-		</dict>
-		<key>NSExtensionPointIdentifier</key>
-		<string>com.apple.dt.Xcode.extension.source-editor</string>
-	</dict>
+                    <key>XCSourceEditorCommandClassName</key>
+                    <string>$(PRODUCT_MODULE_NAME).SourceEditorCommand</string>
+                    <key>XCSourceEditorCommandIdentifier</key>
+                    <string>$(PRODUCT_BUNDLE_IDENTIFIER).LineImpact</string>
+                    <key>XCSourceEditorCommandName</key>
+                    <string>Analyze Line Impact</string>
+                </dict>
+            </array>
+            <key>XCSourceEditorExtensionPrincipalClass</key>
+            <string>$(PRODUCT_MODULE_NAME).SourceEditorExtension</string>
+        </dict>
+        <key>NSExtensionPointIdentifier</key>
+        <string>com.apple.dt.Xcode.extension.source-editor</string>
+    </dict>
 </dict>
 </plist>

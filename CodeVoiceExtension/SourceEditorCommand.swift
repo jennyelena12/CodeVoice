@@ -4,7 +4,6 @@ import XcodeKit
 import FoundationModels
 import AppKit
 
-
 final class SpeechManager: NSObject, AVSpeechSynthesizerDelegate {
     static let shared = SpeechManager()
     
@@ -29,7 +28,7 @@ final class SpeechManager: NSObject, AVSpeechSynthesizerDelegate {
             pasteboard.clearContents()
             pasteboard.setString(message, forType: .string)
             
-            // 2. Play a brief system cue and notify via long delay
+            // 2. Play a brief system cue and notify via delay
             NSSound.beep()
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { [weak self] in
@@ -81,6 +80,10 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand {
             executeCheckErrorsFeature(invocation: invocation)
         } else if identifier.hasSuffix("ReadStructure") {
             executeReadStructureFeature(invocation: invocation)
+        } else if identifier.hasSuffix("ReadLineV2") {
+            executeReadLineFeatureV2(invocation: invocation)
+        } else if identifier.hasSuffix("ReadLineV3") {
+            executeReadLineFeatureV3(invocation: invocation)
         } else if identifier.hasSuffix("ReadLine") {
             executeReadLineFeature(invocation: invocation)
         } else if identifier.hasSuffix("Summarize") {
@@ -98,7 +101,8 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand {
         SpeechManager.shared.speak(message: message, completion: commandCompletion)
     }
 
-    // MARK: - Feature 1: Read Line Context
+    // MARK: - Feature 1: Read Line Context (Original Format)
+    // Example: "Inside struct makan. Line 5. Code: var nasi: String"
 
     private func executeReadLineFeature(invocation: XCSourceEditorCommandInvocation) {
         let buffer = invocation.buffer
@@ -123,6 +127,91 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand {
             : "\(contextPhrase) Line \(lineIndex + 1). Code: \(code)"
 
         speak(message: message)
+    }
+
+    // MARK: - Feature 1.2: Read Line Context V2 ("within")
+    // Example: "Line 5: variable nasi within struct makan."
+
+    private func executeReadLineFeatureV2(invocation: XCSourceEditorCommandInvocation) {
+        let buffer = invocation.buffer
+        guard let selection = buffer.selections.firstObject as? XCSourceTextRange else {
+            commandCompletion?(nil)
+            return
+        }
+
+        let lineIndex = selection.start.line
+        guard lineIndex >= 0, lineIndex < buffer.lines.count,
+              let sourceLine = buffer.lines[lineIndex] as? String else {
+            commandCompletion?(nil)
+            return
+        }
+
+        let code = sourceLine.trimmingCharacters(in: .whitespacesAndNewlines)
+        let entity = describeLineEntity(code: code)
+        let context = findParentContext(in: buffer.lines, startingFrom: lineIndex)
+
+        let message: String
+        if let context = context {
+            message = "Line \(lineIndex + 1): \(entity) within \(context)."
+        } else {
+            message = "Line \(lineIndex + 1): \(entity) at global scope."
+        }
+
+        speak(message: message)
+    }
+
+    // MARK: - Feature 1.3: Read Line Context V3 ("inside")
+    // Example: "Line 5: func nasi inside closure makan."
+
+    private func executeReadLineFeatureV3(invocation: XCSourceEditorCommandInvocation) {
+        let buffer = invocation.buffer
+        guard let selection = buffer.selections.firstObject as? XCSourceTextRange else {
+            commandCompletion?(nil)
+            return
+        }
+
+        let lineIndex = selection.start.line
+        guard lineIndex >= 0, lineIndex < buffer.lines.count,
+              let sourceLine = buffer.lines[lineIndex] as? String else {
+            commandCompletion?(nil)
+            return
+        }
+
+        let code = sourceLine.trimmingCharacters(in: .whitespacesAndNewlines)
+        let entity = describeLineEntity(code: code)
+        let context = findParentContext(in: buffer.lines, startingFrom: lineIndex)
+
+        let message: String
+        if let context = context {
+            message = "Line \(lineIndex + 1): \(entity) inside \(context)."
+        } else {
+            message = "Line \(lineIndex + 1): \(entity) at global scope."
+        }
+
+        speak(message: message)
+    }
+
+    private func describeLineEntity(code: String) -> String {
+        let trimmed = code.trimmingCharacters(in: .whitespacesAndNewlines)
+        if trimmed.isEmpty { return "empty line" }
+
+        if let match = firstRegexMatch(pattern: "\\b(var|let)\\s+([A-Za-z0-9_]+)", in: trimmed, captureGroup: 2) {
+            return "variable \(match)"
+        }
+        if let match = firstRegexMatch(pattern: "\\bfunc\\s+([A-Za-z0-9_]+)", in: trimmed) {
+            return "func \(match)"
+        }
+        if let match = firstRegexMatch(pattern: "\\bstruct\\s+([A-Za-z0-9_]+)", in: trimmed) {
+            return "struct \(match)"
+        }
+        if let match = firstRegexMatch(pattern: "\\bclass\\s+([A-Za-z0-9_]+)", in: trimmed) {
+            return "class \(match)"
+        }
+        if let match = firstRegexMatch(pattern: "\\benum\\s+([A-Za-z0-9_]+)", in: trimmed) {
+            return "enum \(match)"
+        }
+
+        return trimmed
     }
     
     private func findParentContext(in lines: NSMutableArray, startingFrom lineIndex: Int) -> String? {
@@ -318,7 +407,7 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand {
                 }
             } catch {
                 await MainActor.run {
-                    self.speak(message: "No syntax errors found in standard check. AI code analysis unavailable.")
+                    self.speak(message: "No syntax errors found in standard check.")
                 }
             }
         }
@@ -351,7 +440,7 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand {
                 }
             } catch {
                 await MainActor.run {
-                    self.speak(message: "\(structureMessage) The AI summary could not be generated.")
+                    self.speak(message: "\(structureMessage)")
                 }
             }
         }
@@ -531,7 +620,7 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand {
         if trimmed.contains("protocol ") { return "protocol" }
 
         if let match = firstRegexMatch(pattern: "\\bfunc\\s+([A-Za-z0-9_]+)", in: trimmed) {
-            return "function \(match)"
+            return "func \(match)"
         }
         if trimmed.contains("func ") { return "function" }
 
@@ -545,10 +634,17 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand {
         if trimmed.contains("switch ") { return "switch statement" }
 
         if let match = firstRegexMatch(pattern: "\\b(var|let)\\s+([A-Za-z0-9_]+)", in: trimmed, captureGroup: 2) {
+            if trimmed.contains("{") || trimmed.contains("->") || trimmed.contains("closure") {
+                return "closure \(match)"
+            }
             return "property \(match)"
         }
 
         if trimmed.contains("init") { return "initializer" }
+
+        if let match = firstRegexMatch(pattern: "([A-Za-z0-9_]+)\\s*=\\s*\\{", in: trimmed) {
+            return "closure \(match)"
+        }
 
         if let match = firstRegexMatch(pattern: "([A-Za-z0-9_]+)\\s*\\{", in: trimmed) {
             return "\(match) block"
